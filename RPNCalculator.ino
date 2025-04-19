@@ -8,7 +8,6 @@
 
 #include "Stack.h"          // Stack class
 #include <LiquidCrystal.h>  // Liquid Crystal Library
-#include <stdlib.h>         // library for functions like atof
 
 #define DURATION 300
 #define DEBUG 1
