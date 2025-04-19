@@ -111,7 +111,7 @@ void performOperation(char op) {
   float result = 0.0;                   // no inuts left on the stack
   if (op == '+') result = a + b;        // if the operator is a plus symbol, add inputs a and b
   else if (op == '-') result = a - b;   // if the operator is a minus symbol, subtract b from a
-  else if (op == '*') result = a * b;   // if the operator is a muliplication symbol, multiply inputs a and b
+  else if (op == '*') result = a * b;   // if the operator is a multiplication symbol, multiply inputs a and b
   else if (op == '/') {                 // if the operator is a slash symbol, make b the divisor and a the dividend and finish the operation
     if (b == 0) {                       // if the denominator is 0
       lcd.clear();                      // clear the LCD display
