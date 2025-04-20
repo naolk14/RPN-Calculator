@@ -1,10 +1,11 @@
 // PROJECT   :RPN Calculator
-// PURPOSE   :Develop an RPN calculator through the use of stack push and pop
+// PURPOSE   :Develop an RPN calculator
 // COURSE    :ICS3U-E
 // AUTHOR    :N. Ketema
 // DATE      :2025 04 19
 // MCU       :328P (Standalone)
-// REFERENCE :Working
+// REFERENCE :http://darcy.rsgc.on.ca/ACES/TEI3M/Tasks.html#RPN 
+// STATUS    : WORKING
 
 #include "Stack.h"          // Stack class
 #include <LiquidCrystal.h>  // Liquid Crystal Library
