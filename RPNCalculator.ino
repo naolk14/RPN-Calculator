@@ -1,8 +1,8 @@
 // PROJECT   :RPN Calculator
-// PURPOSE   :Develop an RPN calculator
+// PURPOSE   :Develop an RPN calculator through the use of stack push and pop
 // COURSE    :ICS3U-E
 // AUTHOR    :N. Ketema
-// DATE      :2025 04 18
+// DATE      :2025 04 19
 // MCU       :328P (Standalone)
 // REFERENCE :Working
 
@@ -60,12 +60,18 @@ void multipleDigits(char ch) {                    // allows multi-digit #s and n
       lcd.print("Input: ");                       // display "Input:"
       lcd.print(inputBuffer);                     // Display the current input
     } else {
-      lcd.clear();                   // clear LCD if there is an overflow
-      lcd.print("Error: Overflow");  //  print "Error: Overflow" on LCD
+      lcd.clear();            // clear LCD if there is an overflow
+      lcd.print("Error:");    //  print "Error: Overflow" on LCD
+      lcd.setCursor(0, 1);    // set cursor at second row
+      lcd.print("Overflow");  // triggered by
+      lcd.setCursor(7, 0);
+      lcd.print("|Reset|");
+      lcd.setCursor(0, 1);
+      lcd.print("Press = (Equal)");
+      if (ch == 'E') {
+        loop();
+      }
     }
-  } else {
-    lcd.clear();                 // clear the LCD display
-    lcd.print("Invalid Input");  // print "Invalid Input" on the LCD
   }
 }
 
@@ -83,39 +89,45 @@ void pushStack() {
     stack.push(currentNumber);          // Push the number onto the stack
     stackSize++;                        // stack increments by one
     // Reset the buffer for the next input
-    bufferIndex = 0;               // sets position to the very beginning
-    inputBuffer[0] = '\0';         // clears any previous input to allow buffer to be ready to accept new data
-    lcd.print("Pushed: ");         // print "Pushed: " on the LCD
-    lcd.print(currentNumber);      //print the number that is entered
-    lcd.clear();                   // clear display
-    delay(400);                    // clear for 400 miliseconds
-    lcd.print("Input:");           // print "Input:"
-  } else {                         // if not
-    lcd.clear();                   // clear display
-    lcd.print("Error: No Input");  // print "Error: No Input" on the LCD
+    bufferIndex = 0;           // sets position to the very beginning
+    inputBuffer[0] = '\0';     // clears any previous input to allow buffer to be ready to accept new data
+    lcd.print("Pushed: ");     // print "Pushed: " on the LCD
+    lcd.print(currentNumber);  //print the number that is entered
+    lcd.clear();               // clear display
+    delay(400);                // clear for 400 miliseconds
+    lcd.print("Input:");       // print "Input:"
+  } else {                     // if not
+    lcd.clear();               // clear display
+    lcd.print("Error:");       // print "Error: No Input" on the LCD
+    lcd.setCursor(0, 1);       // set cursor at second row
+    lcd.print("No Input");
   }
 }
 
 void performOperation(char op) {
   // if the stack has less than two inputs, print "Error: Stack Empty"
-  if (stackSize < 2) {                // if stack has less than 2
-    lcd.clear();                      // clear LCD display
-    lcd.print("Error: Stack Empty");  // print "Error: Stack Empty" on LCD
-    return;                           // exits function
+  if (stackSize < 2) {    // if stack has less than 2
+    lcd.clear();          // clear LCD display
+    lcd.print("Error:");  // print "Error: Stack Empty" on LCD
+    lcd.setCursor(0, 1);  // set cursor at second row
+    lcd.print("Stack Empty");
+    return;  // exits function
   }
-  float b = stack.pop();                // removes the second input from stack and returns it
-  stackSize--;                          // decrements by one
-  float a = stack.pop();                // removes the first input
-  stackSize--;                          // decrements by one
-  float result = 0.0;                   // no inuts left on the stack
-  if (op == '+') result = a + b;        // if the operator is a plus symbol, add inputs a and b
-  else if (op == '-') result = a - b;   // if the operator is a minus symbol, subtract b from a
-  else if (op == '*') result = a * b;   // if the operator is a multiplication symbol, multiply inputs a and b
-  else if (op == '/') {                 // if the operator is a slash symbol, make b the divisor and a the dividend and finish the operation
-    if (b == 0) {                       // if the denominator is 0
-      lcd.clear();                      // clear the LCD display
-      lcd.print("Error: Divide by 0");  // print "Error: Divide by 0" on the LCD
-      return;                           // exit function
+  float b = stack.pop();               // removes the second input from stack and returns it
+  stackSize--;                         // decrements by one
+  float a = stack.pop();               // removes the first input
+  stackSize--;                         // decrements by one
+  float result = 0.0;                  // no inuts left on the stack
+  if (op == '+') result = a + b;       // if the operator is a plus symbol, add inputs a and b
+  else if (op == '-') result = a - b;  // if the operator is a minus symbol, subtract b from a
+  else if (op == '*') result = a * b;  // if the operator is a muliplication symbol, multiply inputs a and b
+  else if (op == '/') {                // if the operator is a slash symbol, make b the divisor and a the dividend and finish the operation
+    if (b == 0) {                      // if the denominator is 0
+      lcd.clear();                     // clear the LCD display
+      lcd.print("Error: ");            // print "Error: Divide by 0" on the LCD
+      lcd.setCursor(0, 1);             // set cursor at second row
+      lcd.print("Divide by 0");
+      return;  // exit function
     }
     result = a / b;  // the result is the output of a divided by b
   }
